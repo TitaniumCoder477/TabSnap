@@ -1,0 +1,52 @@
+.SYNOPSIS 
+Saves your collection of Chrome windows and tabs
+
+.DESCRIPTION
+TabSnap is a simple, robust, open-source backup tool for your open tabs!
+This extension lets you save a "snap" of all your open windows and tabs. It was born from pure frustration when I lost all my tabs, and all the known methods of getting them back (such as "Reopen closed window") failed to help me.
+
+This extension will help you prepare for that inevitable moment!
+
+This is only version 2.0 of my extension, so be kind and patient. There are more features to come!
+
+Currently:
+- You can save snaps
+- You can load snaps
+
+But you can't delete old snaps, so be choose your save moments wisely! Maybe save only when you really do have a lot open that you would die if you lost!
+
+You also can't name snaps conveniently yet.
+
+Upcoming features I hope to add:
+- Delete snaps
+- Schedule auto snaps
+- Set/rename snaps
+
+.NOTES
+	MIT License
+
+	Copyright (c) 2017 James Wilmoth
+
+	Permission is hereby granted, free of charge, to any person obtaining a copy
+	of this software and associated documentation files (the "Software"), to deal
+	in the Software without restriction, including without limitation the rights
+	to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+	copies of the Software, and to permit persons to whom the Software is
+	furnished to do so, subject to the following conditions:
+
+	The above copyright notice and this permission notice shall be included in all
+	copies or substantial portions of the Software.
+
+	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+	AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+	SOFTWARE.
+	
+.LINK
+https://github.com/TitaniumCoder477/TabSnap
+
+.LINK
+http://opensource.org/licenses/MIT
