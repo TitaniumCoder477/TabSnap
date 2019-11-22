@@ -1,4 +1,4 @@
-.SYNOPSIS 
+.SYNOPSIS
 Saves your collection of Chrome windows and tabs
 
 .DESCRIPTION
@@ -7,15 +7,11 @@ This extension lets you save a "snap" of all your open windows and tabs. It was 
 
 This extension will help you prepare for that inevitable moment!
 
-This is only version 2.0 of my extension, so be kind and patient. There are more features to come!
+This is only version 2.1 of my extension, so be kind and patient. There are more features to come!
 
 Currently:
 - You can save snaps
 - You can load snaps
-
-But you can't delete old snaps, so be choose your save moments wisely! Maybe save only when you really do have a lot open that you would die if you lost!
-
-You also can't name snaps conveniently yet.
 
 Upcoming features I hope to add:
 - Delete snaps
@@ -25,7 +21,7 @@ Upcoming features I hope to add:
 .NOTES
 	MIT License
 
-	Copyright (c) 2017 James Wilmoth
+	Copyright (c) 2019 James Wilmoth
 
 	Permission is hereby granted, free of charge, to any person obtaining a copy
 	of this software and associated documentation files (the "Software"), to deal
@@ -44,7 +40,7 @@ Upcoming features I hope to add:
 	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 	SOFTWARE.
-	
+
 .LINK
 https://github.com/TitaniumCoder477/TabSnap
 

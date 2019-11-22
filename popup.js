@@ -33,12 +33,18 @@ snapBtn.onclick = function() {
 	//This code block saves the current snap and then adds the timestamp to the
 	//popup menu.
 
-	let dateNow = new Date();
-	saveSnap(dateNow);
-	let snapshots = document.getElementById("snapshots").innerHTML;
-	snapshots += "<p>" + dateNow.toLocaleString() + "<b>    X</b></p>";
-	document.getElementById("snapshots").innerHTML = snapshots;
+	let dateObj = new Date();
+	let snapshotsDiv = document.getElementById("snapshots");
+	saveSnap(dateObj);
+	appendTabSnapList(snapshotsDiv, dateObj.getTime());
 };
+
+/*
+let printBtn = document.getElementById('printBtn');
+printBtn.onclick = function() {
+		printChromeStore();
+}
+*/
 
 //var windowMap = new Map;
 //var tabCollections = new Array;
@@ -57,6 +63,7 @@ function init() {
 		console.log(me + "examining possibilities");
 
 		let snapshotsDiv = document.getElementById("snapshots");
+		snapshotsDiv.innerHTML = "";
 		//Iterate through each possible pair from the local storage
 		let load = Object.entries(possibilities);
 		load.forEach(pair => {
@@ -75,17 +82,10 @@ function init() {
 				//This block of code handles parsing the timestamp and adding it to
 				//the html popup menu.
 
-				let time = key.substr(key.indexOf('_')+1);
-				let timestamp = new Date(new Number(time));
-				let snapPara = document.createElement("p");
-				snapPara.id = time;
-				let snapVal = document.createTextNode(timestamp.toLocaleString());
-				snapPara.appendChild(snapVal);
-				snapPara.addEventListener('click', function() {
-					loadSnap(time);
-				});
-				snapshotsDiv.appendChild(snapPara);
-
+				let timeVal = key.substr(key.indexOf('_')+1);
+				console.log("Time is " + timeVal);
+				//let timestamp = new Date(new Number(time));
+				appendTabSnapList(snapshotsDiv, timeVal);
 			} else {
 				console.log(me + "Found something I was not expecting.");
 			}
@@ -93,17 +93,111 @@ function init() {
 	});
 }
 
+function appendTabSnapList(snapshotsDiv, timeVal) {
+	let me = "appendTabSnapList: " + timeVal;
+	console.log(me);
+	let snapPara = document.createElement("p");
+	addLoadOption(snapPara, timeVal);
+	addDeleteOption(snapPara, timeVal);
+	//addArchiveOption(snapPara, timeVal);
+	//addDownloadOption(snapPara, timeVal);
+	snapshotsDiv.appendChild(snapPara);
+}
+
+function refreshTabSnapList() {
+	let me = "refreshTabSnapList: ";
+	console.log(me);
+	init();
+}
+
+/**
+	* @desc adds a delete option to the snap
+	* @param parentElement $parentElement - parent element to append this to
+	* @param number $timeValVal - milliseconds based on the Date.getTime() function
+	* @return
+	*/
+function addDeleteOption(parentElement, timeVal) {
+	// <span id="time" onclick="deleteSnap(time)"> <b>X</b> </span>
+	let snapSpan = document.createElement("span");
+	snapSpan.id = timeVal;
+	let snapBold = document.createElement("b");
+	let snapSpanInner = document.createTextNode(" X ");
+	snapBold.appendChild(snapSpanInner);
+	snapSpan.appendChild(snapBold);
+	snapSpan.addEventListener('click', function() {
+		deleteSnap(timeVal);
+	});
+	parentElement.appendChild(snapSpan);
+}
+
+/**
+	* @desc adds an archive option to the snap
+	* @param parentElement $parentElement - parent element to append this to
+	* @param number $timeValVal - milliseconds based on the Date.getTime() function
+	* @return
+	*/
+function addArchiveOption(parentElement, timeVal) {
+	// <span id="time" onclick="archiveSnap(time)"> <b>A</b> </span>
+	let snapSpan = document.createElement("span");
+	snapSpan.id = timeVal;
+	let snapBold = document.createElement("b");
+	let snapSpanInner = document.createTextNode(" A ");
+	snapBold.appendChild(snapSpanInner);
+	snapSpan.appendChild(snapBold);
+	snapSpan.addEventListener('click', function() {
+		archiveSnap(timeVal);
+	});
+	parentElement.appendChild(snapSpan);
+}
+
+/**
+	* @desc adds a load option to the snap
+	* @param parentElement $parentElement - parent element to append this to
+	* @param number $timeValVal - milliseconds based on the Date.getTime() function
+	* @return
+	*/
+function addLoadOption(parentElement, timeVal) {
+	let dateVal = new Date(new Number(timeVal));
+	let snapSpan = document.createElement("span");
+	snapSpan.id = timeVal;
+	let snapSpanInner = document.createTextNode(dateVal.toLocaleString());
+	snapSpan.appendChild(snapSpanInner);
+	snapSpan.addEventListener('click', function() {
+		loadSnap(timeVal);
+	});
+	parentElement.appendChild(snapSpan);
+}
+
+/**
+	* @desc adds a download option to the snap
+	* @param parentElement $parentElement - parent element to append this to
+	* @param number $timeValVal - milliseconds based on the Date.getTime() function
+	* @return
+	*/
+function addDownloadOption(parentElement, timeVal) {
+	let snapSpan = document.createElement("span");
+	snapSpan.id = timeVal;
+	let snapBold = document.createElement("b");
+	let snapSpanInner = document.createTextNode(" D ");
+	snapBold.appendChild(snapSpanInner);
+	snapSpan.appendChild(snapBold);
+	snapSpan.addEventListener('click', function() {
+		downloadSnap(timeVal);
+	});
+	parentElement.appendChild(snapSpan);
+}
+
 /**
 	* @desc saves the a snapshot of all the windows and tabs
-	* @param Date $dateNow - a date object that represents the timestamp
+	* @param Date $dateVal - a date object that represents the timestamp
 	* @return nothing
 	*/
-function saveSnap(dateNow) {
+function saveSnap(dateVal) {
 	let me = "saveSnap: ";
-	console.log(me + "Snap date is " + dateNow.toLocaleString());
+	console.log(me + "Snap date is " + dateVal.toLocaleString());
 
 	getOpenWindows(function(windows) {
-		let snapKey = "TabSnapWindow_" + dateNow.getTime().toString();
+		let snapKey = "TabSnapWindow_" + dateVal.getTime().toString();
 		let snapVal = JSON.stringify(windows);
 		let snapMap = {};
 		snapMap[snapKey] = snapVal;
@@ -118,7 +212,7 @@ function saveSnap(dateNow) {
 	});
 
 	getOpenTabs(function(tabs) {
-		let snapKey = "TabSnapTabCollection_" + dateNow.getTime().toString();
+		let snapKey = "TabSnapTabCollection_" + dateVal.getTime().toString();
 		let snapVal = JSON.stringify(tabs);
 		let snapMap = {};
 		snapMap[snapKey] = snapVal;
@@ -176,20 +270,71 @@ function getOpenTabs(callback) {
 }
 
 /**
-	* @desc loads a snapshot of all the windows and tabs
-	* @param number $time - milliseconds based on the Date.getTime() function
+	* @desc deletes a snapshot of all the windows and tabs
+	* @param number $timeVal - milliseconds based on the Date.getTime() function
 	* @return nothing
 	*/
-function loadSnap(time) {
-	let me = "loadSnap: ";
-	console.log(me + "User clicked " + time);
+function deleteSnap(timeVal) {
+	let me = "deleteSnap: ";
+	console.log(me + "User clicked " + timeVal);
 
 	//This block of code is written in nested, serial fashion to circumvent the
 	//asymetrical functional calls to the chrome API. We first get all the tabs,
 	//then we get all the windows, then we create each window and its associated
 	//tabs.
 
-	let tabKey = "TabSnapTabCollection_" + time.toString();
+	let key = "TabSnapTabCollection_" + timeVal.toString();
+	console.log(me + "Attempting to remove " + key);
+	chrome.storage.local.remove([key],
+		function(result) {
+			console.log(me + "Deleted " + key + " : Result = " + result);
+		}
+	);
+
+	key = "TabSnapWindow_" + timeVal.toString();
+	console.log(me + "Attempting to remove " + key);
+	chrome.storage.local.remove([key],
+		function(result) {
+			console.log(me + "Deleted " + key + " : Result = " + result);
+		}
+	);
+
+	refreshTabSnapList()
+}
+
+/**
+	* @desc downloads a snapshot of all the windows and tabs
+	* @param number $timeVal - milliseconds based on the Date.getTime() function
+	* @return nothing
+	*/
+function downloadSnap(timeVal) {
+	let me = "downloadSnap: ";
+	console.log(me + "User clicked " + timeVal);
+
+	//This block of code is written in nested, serial fashion to circumvent the
+	//asymetrical functional calls to the chrome API. We first get all the tabs,
+	//then we get all the windows, then we create each window and its associated
+	//tabs.
+
+	// Download snaps here
+
+}
+
+/**
+	* @desc loads a snapshot of all the windows and tabs
+	* @param number $timeVal - milliseconds based on the Date.getTime() function
+	* @return nothing
+	*/
+function loadSnap(timeVal) {
+	let me = "loadSnap: ";
+	console.log(me + "User clicked " + timeVal);
+
+	//This block of code is written in nested, serial fashion to circumvent the
+	//asymetrical functional calls to the chrome API. We first get all the tabs,
+	//then we get all the windows, then we create each window and its associated
+	//tabs.
+
+	let tabKey = "TabSnapTabCollection_" + timeVal.toString();
 	getSavedTabs(tabKey,
 		function(tabs) {
 
@@ -328,4 +473,10 @@ function getSavedTabs(key, callback) {
 			}
 		}
 	);
+}
+
+function printChromeStore() {
+	chrome.storage.local.get(null, function(result) {
+	    console.log(result);
+	});
 }

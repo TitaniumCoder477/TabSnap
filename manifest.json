@@ -1,6 +1,7 @@
 {
 	"name": "TabSnap - Snapshots of your tablife",
-	"version": "2.0",
+	"version": "2.1",
+	"short_name": "TabSnap",
 	"description": "TabSnap is a simple, robust, open-source backup tool for your open tabs!",
 	"permissions": ["storage","tabs"],
 	"background": {
